@@ -17,4 +17,18 @@ const vitamins = [
     // { image: "/assets/images/strepsils.svg", name: "Strepsils", currentPrice: 3500 },
 ];
 
-export { pain, cold, vitamins };
+const format = (number: number) => {
+    // Convert number to string
+    const numStr = number.toString();
+
+    // Split the number into integer and decimal parts
+    const [integerPart, decimalPart] = numStr.split(".");
+
+    // Add commas to the integer part
+    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+    // Reassemble the number with decimal part if exists
+    return decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
+}
+
+export { pain, cold, vitamins, format };
