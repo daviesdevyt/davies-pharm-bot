@@ -77,7 +77,7 @@ const checkout = () => {
           <section className="space-y-2">
             <header className="flex items-center justify-between">
               <h1 className="text-[18px] font-bold">Shipping Address</h1>
-              <p className="text-[#F6D211]">change</p>
+              <p className="text-[#F6D211] cursor-pointer">change</p>
             </header>
             <div className="flex flex-col space-y-2 rounded-[20px] bg-black p-[10px]">
               <p className="border-b text-[12.09px]">Nile</p>
