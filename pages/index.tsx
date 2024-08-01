@@ -7,12 +7,12 @@ import { useState } from "react";
 
 export default function Home() {
   const [active, setActive] = useState<string>("Pain management");
-  const {product} = useProductsStore();
+  const { product } = useProductsStore();
 
   return (
     <main className="min-h-screen p-5 relative flex flex-col">
-      <div className="max-w-8xl m-auto">
-        <h3 className="my-5 text-center text-[17px] font-bold text-white py-4">
+      <div className="max-w-8xl">
+        <h3 className="text-center text-[17px] font-bold text-white py-4">
           PLUGXI
         </h3>
       </div>
@@ -41,7 +41,9 @@ export default function Home() {
         <div className="relative">
           <img src="/assets/images/cart.svg" alt="" />
           <div className="absolute bg-white rounded-full w-4 h-4 flex items-center justify-center -top-4 -right-4">
-            <p className=" text-black text-[10px] text-center ">{product.length}</p>
+            <p className=" text-black text-[10px] text-center ">
+              {product.length}
+            </p>
           </div>
         </div>
       </Link>
