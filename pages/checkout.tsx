@@ -3,7 +3,7 @@ import { useProductsStore } from "@/store/useProducts";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const checkout = () => {
+const Checkout = () => {
   const { product, removeProduct } = useProductsStore();
   const [hydrated, setHydrated] = useState(false);
 
@@ -109,5 +109,5 @@ const checkout = () => {
   );
 };
 
-export default checkout;
+export default Checkout;
 ``;
