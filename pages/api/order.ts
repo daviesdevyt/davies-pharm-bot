@@ -12,7 +12,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     const fetchedProducts = await Product.find({ _id: { $in: productIds } });
 
     let total = 0
-    fetchedProducts.forEach((product) => {
+    fetchedProducts.forEach((product: any) => {
       const productQuantity = products.find((p: any) => p._id === product._id).quantity;
       total += product.price * productQuantity;
     });
