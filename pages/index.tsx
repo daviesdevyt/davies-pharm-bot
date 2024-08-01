@@ -11,7 +11,7 @@ export default function Home() {
     <main className="min-h-screen p-5 relative">
       <div className="max-w-8xl m-auto">
         <h3 className="my-5 text-center text-[17px] font-bold text-white py-4">
-          LOGO
+          PLUGXI
         </h3>
       </div>
       <div className="overflow-scroll">
