@@ -6,8 +6,15 @@ import connectMongoDB from "@/models/mongo";
 export default async function GET(req: NextApiRequest, res: NextApiResponse) {
   try {
     await connectMongoDB();
-    const products = await Category.find({}).populate('products').exec();
-    res.status(200).json(products);
+    var categories = await Category.find({});
+    var response: Array<any> = [];
+    for (let i = 0; i < categories.length; i++) {
+      const category = categories[i];
+      const products = await Product.find({ category: category._id.toString() })
+      category.products = products;
+      response.push(category);
+    }
+    res.status(200).json({response});
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
   }

@@ -5,14 +5,14 @@ const productSchema = new Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   description: { type: String },
-  category: { type: Schema.Types.ObjectId, ref: 'Category' }
+  category: { type: Schema.Types.String, ref: 'Category' }
 });
 
 // Define the Category schema
 const categorySchema = new Schema({
   name: { type: String, required: true },
-  description: { type: String },
-  products: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
+  // description: { type: String },
+  products: [{ type: Schema.Types.String, ref: 'Product' }]
 });
 
 // Create models
