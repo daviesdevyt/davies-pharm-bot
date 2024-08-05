@@ -10,7 +10,7 @@ const Category = ({ products }: { products: any[] }) => {
             id={product._id}
             key={j}
             drug={product.name}
-            image={product.image}
+            image={product.image_url}
             currentPrice={product.price}
             discount={30}
             formerPrice={1000}
