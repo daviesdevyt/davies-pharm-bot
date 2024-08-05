@@ -1,13 +1,18 @@
-import CoughAndCold from "@/components/CoughAndCold";
-import PainManagement from "@/components/PainManagement";
-import Vitamins from "@/components/Vitamins";
+"use client";
 import { useProductsStore } from "@/store/useProducts";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useProducts } from "@/hooks/useProducts";
+import Category from "@/components/Category";
 
 export default function Home() {
-  const [active, setActive] = useState<string>("Pain management");
   const { product } = useProductsStore();
+  const { data } = useProducts();
+  const [active, setActive] = useState<string>("");
+
+  useEffect(() => {
+    if (data) setActive(data?.response[0].name);
+  }, [data]);
 
   return (
     <main className="min-h-screen p-5 relative flex flex-col">
@@ -18,22 +23,22 @@ export default function Home() {
       </div>
       <div className="overflow-scroll">
         <ul className="mb-5 flex space-x-10">
-          {lists.map((list, i) => (
+
+          {data?.response.map((category, i) => (
             <li
               key={i}
-              className={`${
-                active === list ? "text-[#F6D211]" : "text-[#9A9A9D]"
-              } cursor-pointer whitespace-nowrap`}
-              onClick={() => setActive(list)}
+              className={`${active === category.name ? "text-[#F6D211]" : "text-[#9A9A9D]"
+                } cursor-pointer whitespace-nowrap`}
+              onClick={() => setActive(category.name)}
             >
-              {list}
+              {category.name}
             </li>
           ))}
         </ul>
       </div>
-      {active === lists[0] && <PainManagement />}
-      {active === lists[1] && <CoughAndCold />}
-      {active === lists[2] && <Vitamins />}
+      {data?.response.map((category, i) => (
+        active === category.name && <Category key={i} products={category.products} />
+      ))}
       <Link
         href={"/checkout"}
         className="bg-[#F6D211] p-4 rounded-full sticky mt-2 bottom-2 w-fit self-end"
@@ -51,4 +56,4 @@ export default function Home() {
   );
 }
 
-const lists = ["Pain management", "Cough & Cold", "Vitamins"];
+// const lists = ["Pain management", "Cough & Cold", "Vitamins"];

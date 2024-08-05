@@ -30,12 +30,12 @@ const Card: React.FC<CardProps> = ({
       <div className="w-full space-y-1">
         <h1 className="text-[15.2px] font-semibold ">{drug}</h1>
         <h2 className="text-[16px] font-bold text-[#F6D211]">
-          ₦{(currentPrice)}
+          ${(currentPrice)}
         </h2>
         {formerPrice && (
           <div className="flex items-center space-x-1">
             <h3 className="text-[12px] text-[#E1E2E47A] line-through">
-              ₦{(formerPrice)}
+              ${(formerPrice)}
             </h3>
             <p className="text-[8px] text-[#F6D211]">{discount}% Off</p>
           </div>

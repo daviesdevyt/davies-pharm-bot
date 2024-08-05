@@ -1,3 +1,4 @@
+"use client";
 import { format } from "@/constants/drugs";
 import { useProductsStore } from "@/store/useProducts";
 import Link from "next/link";
@@ -36,11 +37,11 @@ const Checkout = () => {
               key={i}
             >
               <div className="flex space-x-3">
-                <img src={items.image} className=" h-[45px] w-[80px]" alt="Drug Image" />
+                <img src={items.image} className=" h-[45px] w-[80px]" alt="Image" />
                 <div>
                   <h1 className="font-medium ">{items.name}</h1>
                   <h2 className="text-[15px] font-bold text-[#F6D211]">
-                    ₦{format(items.price)}
+                    ${format(items.price)}
                   </h2>
                 </div>
               </div>
@@ -69,7 +70,7 @@ const Checkout = () => {
                 <div className="size-2 rounded-full bg-[#F6D211]" />
               </div>
               <div className="flex items-center justify-center rounded-lg bg-[#F6D211] p-4">
-                <img src="/assets/images/wallet.svg" alt="Drug Image" />
+                <img src="/assets/images/wallet.svg" alt="Image" />
               </div>
               <h1 className="text-[17px]">Wallet</h1>
             </div>
@@ -89,16 +90,16 @@ const Checkout = () => {
             </div>
           </section>
           <section className="space-y-2">
-            <h1>Phone number</h1>
+            <h1>Email</h1>
             <input
               className="w-full rounded-lg bg-black p-3 outline-none placeholder:text-white"
               type="text"
-              placeholder="Enter Phone Number"
+              placeholder="Enter your contact email"
             />
           </section>
           <section className="flex justify-between">
             <p className="text-[17px]">Total</p>
-            <h1 className="font-medium">₦{product.reduce((accumulator, item) => (accumulator + item.price), 0)}</h1>
+            <h1 className="font-medium">${product.reduce((accumulator, item) => (accumulator + item.price), 0)}</h1>
           </section>
           <button className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black">
             Proceed to payment
