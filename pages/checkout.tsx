@@ -2,20 +2,21 @@
 import { format } from "@/constants/drugs";
 import { useProductsStore } from "@/store/useProducts";
 import Link from "next/link";
-import { ReactHTMLElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const Checkout = () => {
-  const { product, removeProduct } = useProductsStore();
+  const { product, removeProduct, increment, decrement } = useProductsStore();
   const [hydrated, setHydrated] = useState(false);
 
-  const [edit, setEdit] = useState<boolean>(true);
+  // const [edit, setEdit] = useState<boolean>(true);
 
-  const [shippingDetails, setShippingDetails] = useState({
-    country: "Nile",
-    house:
-      "Plot 681, Cadastral Zone C, OO, Research & Institution Area,Airport Road, Jabi",
-    phone: "+2349073210998",
-  });
+  // const [shippingDetails, setShippingDetails] = useState({
+  //   country: "Nile",
+  //   house:
+  //     "Plot 681, Cadastral Zone C, OO, Research & Institution Area,Airport Road, Jabi",
+  //   phone: "+2349073210998",
+  // });
 
   useEffect(() => {
     setHydrated(true);
@@ -29,13 +30,13 @@ const Checkout = () => {
   //     products.reduce((accumulator, item) => (accumulator + item.price) )
   //   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setShippingDetails((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setShippingDetails((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
   return (
     <main className="min-h-screen space-y-5 p-5 text-white">
@@ -53,25 +54,44 @@ const Checkout = () => {
               className="flex items-start justify-between rounded-[20px] bg-black p-[10px]"
               key={i}
             >
-              <div className="flex space-x-3">
+              <div className="flex space-x-3 w-full">
                 <img
                   src={items.image}
                   className=" h-[45px] w-[80px] object-contain"
                   alt="Image"
                 />
-                <div>
-                  <h1 className="font-medium ">{items.name}</h1>
-                  <h2 className="text-[15px] font-bold text-[#F6D211]">
-                    ${format(items.price)}
-                  </h2>
+                <div className="w-full">
+                  <div className="flex justify-between">
+                    <h1 className="font-medium ">{items.name}</h1>
+                    <img
+                      className="cursor-pointer"
+                      src="/assets/images/close.svg"
+                      alt="remove item"
+                      onClick={() => {removeProduct(items.id); toast.success("Item removed")}}
+                    />
+                  </div>
+                  <div className="flex justify-between">
+                    <h2 className="text-[15px] font-bold text-[#F6D211]">
+                      ${format(items.price)}
+                    </h2>
+                    <div className="space-x-4 flex">
+                      <span
+                        className="cursor-pointer"
+                        onClick={() => decrement(items.id)}
+                      >
+                        -
+                      </span>
+                      <p>{items.quantity}</p>
+                      <span
+                        className="cursor-pointer"
+                        onClick={() => increment(items.id)}
+                      >
+                        +
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <img
-                className="cursor-pointer"
-                src="/assets/images/close.svg"
-                alt="remove item"
-                onClick={() => removeProduct(items.id)}
-              />
             </div>
           ))
         ) : (
@@ -99,15 +119,23 @@ const Checkout = () => {
           <section className="space-y-2">
             <header className="flex items-center justify-between">
               <h1 className="text-[18px] font-bold">Shipping Address</h1>
-              <p
+              {/* <p
                 className="text-[#F6D211] cursor-pointer"
                 onClick={() => setEdit(!edit)}
               >
                 {!edit ? "save" : "change"}
-              </p>
+              </p> */}
             </header>
-            <div className="flex flex-col space-y-2 rounded-[20px] bg-black p-[10px]">
-              <input
+            <div className="flex flex-col space-y-2 rounded-[20px] bg-black p-[15px]">
+              <textarea
+                className="bg-transparent outline-none resize-none text-sm"
+                name=""
+                id=""
+                placeholder="Enter your address"
+                // cols="30"
+                // rows="10"
+              ></textarea>
+              {/* <input
                 name="country"
                 value={shippingDetails.country}
                 className="border-b text-[12.09px] outline-none bg-transparent"
@@ -127,7 +155,7 @@ const Checkout = () => {
                 value={shippingDetails.phone}
                 readOnly={edit}
                 onChange={handleChange}
-              />
+              /> */}
             </div>
           </section>
           <section className="space-y-2">

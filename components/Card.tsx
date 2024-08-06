@@ -1,4 +1,5 @@
 import { useProductsStore } from "@/store/useProducts";
+import toast from "react-hot-toast";
 
 interface CardProps {
   drug: string;
@@ -20,6 +21,7 @@ const Card: React.FC<CardProps> = ({
   const { addProduct } = useProductsStore();
   const handleClick = () => {
     addProduct({ image, price: currentPrice, id, name: drug });
+    toast.success("Item has been added");
     console.log(
       `Added ${drug} of price ${currentPrice} and of image ${image} also of id ${id} into the store`
     );
@@ -30,12 +32,12 @@ const Card: React.FC<CardProps> = ({
       <div className="w-full space-y-1">
         <h1 className="text-[15.2px] font-semibold ">{drug}</h1>
         <h2 className="text-[16px] font-bold text-[#F6D211]">
-          ${(currentPrice)}
+          ${currentPrice}
         </h2>
         {formerPrice && (
           <div className="flex items-center space-x-1">
             <h3 className="text-[12px] text-[#E1E2E47A] line-through">
-              ${(formerPrice)}
+              ${formerPrice}
             </h3>
             <p className="text-[8px] text-[#F6D211]">{discount}% Off</p>
           </div>
