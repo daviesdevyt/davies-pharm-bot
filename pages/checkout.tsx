@@ -180,7 +180,7 @@ const Checkout = () => {
             <h1 className="font-medium">
               $
               {product.reduce(
-                (accumulator, item) => accumulator + item.price,
+                (accumulator, item) => accumulator + (item.price * item.quantity),
                 0
               )}
             </h1>
@@ -189,7 +189,7 @@ const Checkout = () => {
             className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black"
             onClick={() =>
               mutate({
-                user: window.Telegram.WebApp.initDataUnsafe.user.id,
+                user: 12345678,
                 products: product.map((item) => ({
                   _id: item.id,
                   quantity: item.quantity,
