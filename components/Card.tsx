@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({
   };
   return (
     <div className="-center relative flex flex-col rounded-2xl border border-[#2D2D2D] bg-black px-4 py-2">
-      <img src={image} className="my-4 h-[91px]" alt="" />
+      <img src={image} className="my-4 h-[91px] object-contain" alt="" />
       <div className="w-full space-y-1">
         <h1 className="text-[15.2px] font-semibold ">{drug}</h1>
         <h2 className="text-[16px] font-bold text-[#F6D211]">

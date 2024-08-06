@@ -56,7 +56,7 @@ const Checkout = () => {
               <div className="flex space-x-3">
                 <img
                   src={items.image}
-                  className=" h-[45px] w-[80px]"
+                  className=" h-[45px] w-[80px] object-contain"
                   alt="Image"
                 />
                 <div>
