@@ -1,5 +1,6 @@
 "use client";
 import { format } from "@/constants/drugs";
+import { usePayment } from "@/hooks/usePayment";
 import { useProductsStore } from "@/store/useProducts";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -7,6 +8,9 @@ import toast from "react-hot-toast";
 
 const Checkout = () => {
   const { product, removeProduct, increment, decrement } = useProductsStore();
+  const { mutate } = usePayment();
+  const [shipping_address, setShippingAddress] = useState<string>("")
+
   const [hydrated, setHydrated] = useState(false);
 
   // const [edit, setEdit] = useState<boolean>(true);
@@ -67,7 +71,10 @@ const Checkout = () => {
                       className="cursor-pointer"
                       src="/assets/images/close.svg"
                       alt="remove item"
-                      onClick={() => {removeProduct(items.id); toast.success("Item removed")}}
+                      onClick={() => {
+                        removeProduct(items.id);
+                        toast.success("Item removed");
+                      }}
                     />
                   </div>
                   <div className="flex justify-between">
@@ -132,6 +139,8 @@ const Checkout = () => {
                 name=""
                 id=""
                 placeholder="Enter your address"
+                value={shipping_address}
+                onChange={(e) => setShippingAddress(e.target.value)}
                 // cols="30"
                 // rows="10"
               ></textarea>
@@ -176,7 +185,19 @@ const Checkout = () => {
               )}
             </h1>
           </section>
-          <button className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black">
+          <button
+            className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black"
+            onClick={() =>
+              mutate({
+                user: window.Telegram.WebApp.initDataUnsafe.user.id,
+                products: product.map((item) => ({
+                  _id: item.id,
+                  quantity: item.quantity,
+                })),
+                shipping_address
+              })
+            }
+          >
             Proceed to payment
           </button>{" "}
         </>
