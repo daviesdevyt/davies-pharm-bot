@@ -2,7 +2,7 @@ import ApiClient from "@/services/api-client";
 import { useMutation } from "@tanstack/react-query";
 
 interface Order {
-  user: number;
+  user: string;
   products: { _id: number; quantity: number }[];
   shipping_address: string;
   email: string;

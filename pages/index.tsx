@@ -4,11 +4,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useProducts } from "@/hooks/useProducts";
 import Category from "@/components/Category";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const { product } = useProductsStore();
   const { data } = useProducts();
   const [active, setActive] = useState<string>("");
+  const router = useRouter();
+  const { user_id } = router.query;
+  console.log(user_id);
 
   useEffect(() => {
     if (data) setActive(data?.response[0].name);
@@ -24,7 +28,7 @@ export default function Home() {
       <div className="overflow-scroll">
         <ul className="mb-5 flex space-x-10">
 
-          {data?.response.map((category: any, i:any) => (
+          {data?.response.map((category: any, i: any) => (
             <li
               key={i}
               className={`${active === category.name ? "text-[#F6D211]" : "text-[#9A9A9D]"
@@ -36,11 +40,11 @@ export default function Home() {
           ))}
         </ul>
       </div>
-      {data?.response.map((category: any, i:any) => (
+      {data?.response.map((category: any, i: any) => (
         active === category.name && <Category key={i} products={category.products} />
       ))}
       <Link
-        href={"/checkout"}
+        href={"/checkout?user_id=" + user_id}
         className="bg-[#F6D211] p-4 rounded-full sticky mt-2 bottom-2 w-fit self-end"
       >
         <div className="relative">

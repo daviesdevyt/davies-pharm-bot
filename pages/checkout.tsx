@@ -5,6 +5,7 @@ import { useProductsStore } from "@/store/useProducts";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const Checkout = () => {
   const { product, removeProduct, increment, decrement } = useProductsStore();
@@ -13,7 +14,9 @@ const Checkout = () => {
   const [email, setEmail] = useState<string>("")
 
   const [hydrated, setHydrated] = useState(false);
-
+  const router = useRouter();
+  const { user_id } = router.query;
+  
   // const [edit, setEdit] = useState<boolean>(true);
 
   // const [shippingDetails, setShippingDetails] = useState({
@@ -45,7 +48,7 @@ const Checkout = () => {
   return (
     <main className="min-h-screen space-y-5 p-5 text-white">
       <header className="flex">
-        <Link href={"/"}>
+        <Link href={"/?user_id="+user_id}>
           <img src="/assets/images/arrow-left.svg" alt="Back Arrow" />
         </Link>
         <h1 className="flex-1 text-center">Checkout</h1>
@@ -191,7 +194,7 @@ const Checkout = () => {
             onClick={() => {
               if (shipping_address !== "" && email !== "") {
                 mutate({
-                  user: 123,
+                  user: user_id as string,
                   products: product.map((item) => ({
                     _id: item.id,
                     quantity: item.quantity,
