@@ -190,17 +190,22 @@ const Checkout = () => {
           <button
             className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black"
             onClick={() => {
-              if (shipping_address !== "") {
+              if (shipping_address !== "" && email !== "") {
                 mutate({
-                  user: 1289366093, // window.Telegram.WebApp.initDataUnsafe.user.id,
+                  user: window.Telegram.WebApp.initDataUnsafe.user.id,
                   products: product.map((item) => ({
                     _id: item.id,
                     quantity: item.quantity,
                   })),
                   shipping_address, email
+                }, {
+                  onSuccess: (response) => window.Telegram.WebApp.close(),
+                  onError: (error) => {
+                    toast.error("Invoice generation failed. Please try again.");
+                  },
                 });
               } else {
-                toast.error("Please enter an address");
+                toast.error("Please enter an address and email");
               }
             }}
           >

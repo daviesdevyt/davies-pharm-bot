@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { Order, Product } from "@/models/models";
 import connectMongoDB from "@/models/mongo";
 import { createInvoice } from "@/lib/pay";
+import { sendMessage } from "@/lib/bot";
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -21,19 +22,26 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
       total += product.price * productQuantity;
     });
 
-    
-    // Create the order with the fetched products
-    // const order = new Order({ user, products: orderedProducts, shipping_address, total, email, status: "created" });
-    // await order.save();
-
     // Create payment link
-    const paymentLink = await createInvoice(total, { user, products: orderedProducts, shipping_address, email});
-    console.log(paymentLink);
-    res.status(200).json({"order": "success", "paymentLink": paymentLink});
+    const invoice = await createInvoice(total, { user, products: orderedProducts, shipping_address, email });
+
+    // Create the order with the fetched products
+    const order = new Order({ user, products: orderedProducts, shipping_address, total, email, status: "created", invoice_id: invoice.invoice_id });
+    await order.save();
+
+    const inlineKeyboard = {
+      inline_keyboard: [
+        [
+          {
+            text: "Pay",
+            url: invoice.pay_url,
+          },
+        ],
+      ],
+    };
+    sendMessage(user, `Click to <a href="${invoice.pay_url}">Here</a> to pay`, { parse_mode: "HTML", reply_markup: inlineKeyboard });
+    res.status(200).json({ order: "success" });
   } catch (error) {
-    console.log(error);
-    
     res.status(500).json({ error: "Failed to fetch products" });
   }
 }
-

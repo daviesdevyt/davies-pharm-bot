@@ -29,6 +29,7 @@ const orderSchema = new Schema({
   shipping_address: String,
   email: String,
   status: String,
+  invoice_id: Number,
 });
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
