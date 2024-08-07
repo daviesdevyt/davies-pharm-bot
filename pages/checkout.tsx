@@ -13,7 +13,6 @@ const Checkout = () => {
   const [email, setEmail] = useState<string>("")
 
   const [hydrated, setHydrated] = useState(false);
-  const [user_id, setUserId] = useState<number>(0);
 
   // const [edit, setEdit] = useState<boolean>(true);
 
@@ -26,7 +25,6 @@ const Checkout = () => {
 
   useEffect(() => {
     setHydrated(true);
-    setUserId(window?.Telegram?.WebApp?.initDataUnsafe?.user?.id);
   }, []);
 
   if (!hydrated) {
@@ -50,7 +48,7 @@ const Checkout = () => {
         <Link href={"/"}>
           <img src="/assets/images/arrow-left.svg" alt="Back Arrow" />
         </Link>
-        <h1 className="flex-1 text-center">Checkout {user_id}</h1>
+        <h1 className="flex-1 text-center">Checkout</h1>
       </header>
       <section className="space-y-2">
         <h1 className="text-[18px] font-bold">Your Order</h1>
@@ -193,7 +191,7 @@ const Checkout = () => {
             onClick={() => {
               if (shipping_address !== "" && email !== "") {
                 mutate({
-                  user: user_id,
+                  user: 123,
                   products: product.map((item) => ({
                     _id: item.id,
                     quantity: item.quantity,
