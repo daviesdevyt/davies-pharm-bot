@@ -12,11 +12,12 @@ const Checkout = () => {
   const { mutate } = usePayment();
   const [shipping_address, setShippingAddress] = useState<string>("")
   const [email, setEmail] = useState<string>("")
+  const [checkoutDisabled, setCheckoutDisabled] = useState<boolean>(false)
 
   const [hydrated, setHydrated] = useState(false);
   const router = useRouter();
   const { user_id } = router.query;
-  
+
   // const [edit, setEdit] = useState<boolean>(true);
 
   // const [shippingDetails, setShippingDetails] = useState({
@@ -48,7 +49,7 @@ const Checkout = () => {
   return (
     <main className="min-h-screen space-y-5 p-5 text-white">
       <header className="flex">
-        <Link href={"/?user_id="+user_id}>
+        <Link href={"/?user_id=" + user_id}>
           <img src="/assets/images/arrow-left.svg" alt="Back Arrow" />
         </Link>
         <h1 className="flex-1 text-center">Checkout</h1>
@@ -190,6 +191,7 @@ const Checkout = () => {
             </h1>
           </section>
           <button
+            disabled={checkoutDisabled}
             className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black"
             onClick={() => {
               if (shipping_address !== "" && email !== "") {
@@ -201,7 +203,10 @@ const Checkout = () => {
                   })),
                   shipping_address, email
                 }, {
-                  onSuccess: (response) => window.Telegram.WebApp.close(),
+                  onSuccess: (response) => {
+                    toast.success("Invoice sent to your chat")
+                    setCheckoutDisabled(true)
+                  },
                   onError: (error) => {
                     toast.error("Invoice generation failed. Please try again.");
                   },
