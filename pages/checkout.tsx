@@ -136,7 +136,7 @@ const Checkout = () => {
             </header>
             <div className="flex flex-col space-y-2 rounded-[20px] bg-black p-[15px]">
               <textarea
-                className="bg-transparent outline-none resize-none text-sm"
+                className="bg-transparent outline-none resize-none text-sm placeholder:text-white"
                 name=""
                 id=""
                 placeholder="Enter your address"
@@ -171,7 +171,7 @@ const Checkout = () => {
           <section className="space-y-2">
             <h1>Email</h1>
             <input
-              className="w-full rounded-lg bg-black p-3 outline-none placeholder:text-white"
+              className="w-full rounded-lg bg-black p-3 text-sm outline-none placeholder:text-white"
               type="text"
               placeholder="Enter your contact email"
               onChange={(e) => setEmail(e.target.value)}
@@ -182,23 +182,27 @@ const Checkout = () => {
             <h1 className="font-medium">
               $
               {product.reduce(
-                (accumulator, item) => accumulator + (item.price * item.quantity),
+                (accumulator, item) => accumulator + item.price * item.quantity,
                 0
               )}
             </h1>
           </section>
           <button
             className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black"
-            onClick={() =>
-              mutate({
-                user: 1289366093, // window.Telegram.WebApp.initDataUnsafe.user.id,
-                products: product.map((item) => ({
-                  _id: item.id,
-                  quantity: item.quantity,
-                })),
-                shipping_address, email
-              })
-            }
+            onClick={() => {
+              if (shipping_address !== "") {
+                mutate({
+                  user: 1289366093, // window.Telegram.WebApp.initDataUnsafe.user.id,
+                  products: product.map((item) => ({
+                    _id: item.id,
+                    quantity: item.quantity,
+                  })),
+                  shipping_address, email
+                });
+              } else {
+                toast.error("Please enter an address");
+              }
+            }}
           >
             Proceed to payment
           </button>{" "}
