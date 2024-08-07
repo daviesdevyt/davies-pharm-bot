@@ -28,7 +28,7 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
 
     // Create payment link
     const paymentLink = await createInvoice(total, { user, products: orderedProducts, shipping_address, email});
-
+    console.log(paymentLink);
     res.status(200).json({"order": "success", "paymentLink": paymentLink});
   } catch (error) {
     console.log(error);
