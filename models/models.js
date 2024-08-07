@@ -28,6 +28,7 @@ const orderSchema = new Schema({
   products: [],
   shipping_address: String,
   email: String,
+  status: String,
 });
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);

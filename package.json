@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@foile/crypto-pay-api": "^1.0.4",
     "@tanstack/react-query": "^5.51.21",
     "axios": "^1.7.3",
     "mongoose": "^8.5.2",
