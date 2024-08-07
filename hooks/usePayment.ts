@@ -5,6 +5,7 @@ interface Order {
   user: number;
   products: { _id: number; quantity: number }[];
   shipping_address: string;
+  email: string;
 }
 
 const apiClient = new ApiClient<any>("api/order");

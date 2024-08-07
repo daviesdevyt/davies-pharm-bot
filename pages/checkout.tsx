@@ -10,6 +10,7 @@ const Checkout = () => {
   const { product, removeProduct, increment, decrement } = useProductsStore();
   const { mutate } = usePayment();
   const [shipping_address, setShippingAddress] = useState<string>("")
+  const [email, setEmail] = useState<string>("")
 
   const [hydrated, setHydrated] = useState(false);
 
@@ -141,8 +142,8 @@ const Checkout = () => {
                 placeholder="Enter your address"
                 value={shipping_address}
                 onChange={(e) => setShippingAddress(e.target.value)}
-                // cols="30"
-                // rows="10"
+              // cols="30"
+              // rows="10"
               ></textarea>
               {/* <input
                 name="country"
@@ -173,6 +174,7 @@ const Checkout = () => {
               className="w-full rounded-lg bg-black p-3 outline-none placeholder:text-white"
               type="text"
               placeholder="Enter your contact email"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </section>
           <section className="flex justify-between">
@@ -189,12 +191,12 @@ const Checkout = () => {
             className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black"
             onClick={() =>
               mutate({
-                user: 12345678,
+                user: 1289366093, // window.Telegram.WebApp.initDataUnsafe.user.id,
                 products: product.map((item) => ({
                   _id: item.id,
                   quantity: item.quantity,
                 })),
-                shipping_address
+                shipping_address, email
               })
             }
           >

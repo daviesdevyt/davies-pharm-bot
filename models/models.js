@@ -25,7 +25,9 @@ const userSchema = new Schema({
 const orderSchema = new Schema({
   user: { type: Schema.Types.String, ref: 'User' },
   total: Number,
-  products: []
+  products: [],
+  shipping_address: String,
+  email: String,
 });
 
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
