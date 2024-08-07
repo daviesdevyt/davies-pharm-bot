@@ -24,7 +24,7 @@ export default function Home() {
       <div className="overflow-scroll">
         <ul className="mb-5 flex space-x-10">
 
-          {data?.response.map((category, i) => (
+          {data?.response.map((category: any, i:any) => (
             <li
               key={i}
               className={`${active === category.name ? "text-[#F6D211]" : "text-[#9A9A9D]"
@@ -36,7 +36,7 @@ export default function Home() {
           ))}
         </ul>
       </div>
-      {data?.response.map((category, i) => (
+      {data?.response.map((category: any, i:any) => (
         active === category.name && <Category key={i} products={category.products} />
       ))}
       <Link
