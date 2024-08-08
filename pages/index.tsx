@@ -10,9 +10,15 @@ export default function Home() {
   const { product } = useProductsStore();
   const { data } = useProducts();
   const [active, setActive] = useState<string>("");
+  const [debug, setDebug] = useState<string>("");
   const router = useRouter();
+
   const { user_id } = router.query;
-  console.log(user_id);
+  useEffect(() => {
+    let text = "Started"
+    if (window?.Telegram?.WebApp?.initDataUnsafe?.user?.id) text += "\nChat ID found"
+    setDebug(text);
+  }, []);
 
   useEffect(() => {
     if (data) setActive(data?.response[0].name);
@@ -22,7 +28,7 @@ export default function Home() {
     <main className="min-h-screen p-5 relative flex flex-col">
       <div className="max-w-8xl">
         <h3 className="text-center text-[17px] font-bold text-white py-4">
-          PLUGXI
+          PLUGXI {debug}
         </h3>
       </div>
       <div className="overflow-scroll">
