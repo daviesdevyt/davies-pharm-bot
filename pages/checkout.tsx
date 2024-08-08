@@ -10,9 +10,9 @@ import { useRouter } from "next/router";
 const Checkout = () => {
   const { product, removeProduct, increment, decrement } = useProductsStore();
   const { mutate } = usePayment();
-  const [shipping_address, setShippingAddress] = useState<string>("")
-  const [email, setEmail] = useState<string>("")
-  const [checkoutDisabled, setCheckoutDisabled] = useState<boolean>(false)
+  const [shipping_address, setShippingAddress] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [checkoutDisabled, setCheckoutDisabled] = useState<boolean>(false);
 
   const [hydrated, setHydrated] = useState(false);
   const router = useRouter();
@@ -68,7 +68,7 @@ const Checkout = () => {
                   className=" h-[45px] w-[80px] object-contain"
                   alt="Image"
                 />
-                <div className="w-full">
+                <div className="w-full space-y-2">
                   <div className="flex justify-between">
                     <h1 className="font-medium ">{items.name}</h1>
                     <img
@@ -81,20 +81,20 @@ const Checkout = () => {
                       }}
                     />
                   </div>
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <h2 className="text-[15px] font-bold text-[#F6D211]">
                       ${format(items.price)}
                     </h2>
-                    <div className="space-x-4 flex">
+                    <div className="space-x-4 flex items-center">
                       <span
-                        className="cursor-pointer"
+                        className="cursor-pointer text-3xl"
                         onClick={() => decrement(items.id)}
                       >
                         -
                       </span>
                       <p>{items.quantity}</p>
                       <span
-                        className="cursor-pointer"
+                        className="cursor-pointer text-3xl"
                         onClick={() => increment(items.id)}
                       >
                         +
@@ -145,8 +145,8 @@ const Checkout = () => {
                 placeholder="Enter your address"
                 value={shipping_address}
                 onChange={(e) => setShippingAddress(e.target.value)}
-              // cols="30"
-              // rows="10"
+                // cols="30"
+                // rows="10"
               ></textarea>
               {/* <input
                 name="country"
@@ -195,22 +195,28 @@ const Checkout = () => {
             className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black"
             onClick={() => {
               if (shipping_address !== "" && email !== "") {
-                mutate({
-                  user: user_id as string,
-                  products: product.map((item) => ({
-                    _id: item.id,
-                    quantity: item.quantity,
-                  })),
-                  shipping_address, email
-                }, {
-                  onSuccess: (response) => {
-                    toast.success("Invoice sent to your chat")
-                    setCheckoutDisabled(true)
+                mutate(
+                  {
+                    user: user_id as string,
+                    products: product.map((item) => ({
+                      _id: item.id,
+                      quantity: item.quantity,
+                    })),
+                    shipping_address,
+                    email,
                   },
-                  onError: (error) => {
-                    toast.error("Invoice generation failed. Please try again.");
-                  },
-                });
+                  {
+                    onSuccess: (response) => {
+                      toast.success("Invoice sent to your chat");
+                      setCheckoutDisabled(true);
+                    },
+                    onError: (error) => {
+                      toast.error(
+                        "Invoice generation failed. Please try again."
+                      );
+                    },
+                  }
+                );
               } else {
                 toast.error("Please enter an address and email");
               }
