@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useProducts } from "@/hooks/useProducts";
 import Category from "@/components/Category";
-import { useRouter } from "next/router";
 
 export default function Home() {
   const { product } = useProductsStore();
