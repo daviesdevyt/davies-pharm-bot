@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Category, Product } from "@/models/models";
+import { Category, Product, SiteData } from "@/models/models";
 import connectMongoDB from "@/models/mongo";
 
 export default async function GET(req: NextApiRequest, res: NextApiResponse) {
@@ -14,7 +14,8 @@ export default async function GET(req: NextApiRequest, res: NextApiResponse) {
       category.products = products;
       response.push(category);
     }
-    res.status(200).json({response});
+    const siteHeader = await SiteData.findOne({"_id": "header"}).exec();
+    res.status(200).json({response, headerText: siteHeader?.value});
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
   }

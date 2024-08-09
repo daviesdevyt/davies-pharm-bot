@@ -18,7 +18,7 @@ export default function Home() {
     <main className="min-h-screen p-5 relative flex flex-col">
       <div className="max-w-8xl">
         <h3 className="text-center text-[17px] font-bold text-white py-4">
-          PLUGXI
+          {data?.headerText}
         </h3>
       </div>
       <div className="overflow-scroll">

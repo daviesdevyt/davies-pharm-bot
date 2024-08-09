@@ -206,6 +206,7 @@ const Checkout = () => {
                     onSuccess: (response) => {
                       toast.success("Invoice sent to your chat");
                       setCheckoutDisabled(true);
+                      window.Telegram.WebApp.close()
                     },
                     onError: (error) => {
                       toast.error(

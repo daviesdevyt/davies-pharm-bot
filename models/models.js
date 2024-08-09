@@ -13,7 +13,7 @@ const categorySchema = new Schema({
   name: { type: String, required: true },
   // description: { type: String },
   products: [{ type: Schema.Types.String, ref: 'Product' }]
-});
+},{ collection: 'categories' });
 
 // Create models
 
@@ -32,7 +32,13 @@ const orderSchema = new Schema({
   invoice_id: Number,
 });
 
+const siteDataSchema = new Schema({
+  _id: String,
+  value: String,
+},{ collection: 'site_data' });
+
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
 export const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 export const Category = mongoose.models.Category || mongoose.model('Category', categorySchema);
 export const Order = mongoose.models.Order || mongoose.model("Order", orderSchema);
+export const SiteData = mongoose.models.site_data || mongoose.model("site_data", siteDataSchema);
