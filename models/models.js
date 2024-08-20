@@ -40,6 +40,7 @@ const siteDataSchema = new Schema({
 
 const voucherSchema = new Schema({
   _id: String,
+  code: String,
   value: Number,
 });
 
