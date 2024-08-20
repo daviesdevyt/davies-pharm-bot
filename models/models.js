@@ -37,8 +37,15 @@ const siteDataSchema = new Schema({
   value: String,
 },{ collection: 'site_data' });
 
+
+const voucherSchema = new Schema({
+  _id: String,
+  value: Number,
+});
+
 export const User = mongoose.models.User || mongoose.model("User", userSchema);
 export const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 export const Category = mongoose.models.Category || mongoose.model('Category', categorySchema);
 export const Order = mongoose.models.Order || mongoose.model("Order", orderSchema);
 export const SiteData = mongoose.models.site_data || mongoose.model("site_data", siteDataSchema);
+export const Voucher = mongoose.models.Voucher || mongoose.model("Voucher", voucherSchema);
