@@ -4,10 +4,11 @@ import { Order, Product } from "@/models/models";
 import connectMongoDB from "@/models/mongo";
 import { createInvoice } from "@/lib/pay";
 import { sendMessage } from "@/lib/bot";
+import { Voucher } from "@/models/models";
 
 export default async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { products, user, shipping_address, email } = req.body;
+    const { products, user, shipping_address, email, voucher } = req.body;
     await connectMongoDB();
 
     const productIds = products.map((product: any) => product._id);
@@ -23,10 +24,24 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     });
 
     // Create payment link
-    const invoice = await createInvoice(total, { user, products: orderedProducts, shipping_address, email });
+    if (voucher) {
+      var v = await Voucher.findOne({ code: voucher }).exec();
+    }
+    const voucherValue = v?.value || 0;
+
+    const invoice = await createInvoice(total - voucherValue, { user, products: orderedProducts, shipping_address, email, voucher });
 
     // Create the order with the fetched products
-    const order = new Order({ user, products: orderedProducts, shipping_address, total, email, status: "created", invoice_id: invoice.invoice_id });
+    const order = new Order({
+      user,
+      products: orderedProducts,
+      shipping_address,
+      total,
+      email,
+      status: "created",
+      invoice_id: invoice.invoice_id,
+      voucher,
+    });
     await order.save();
 
     const inlineKeyboard = {

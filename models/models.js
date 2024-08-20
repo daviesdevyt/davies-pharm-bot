@@ -30,6 +30,7 @@ const orderSchema = new Schema({
   email: String,
   status: String,
   invoice_id: Number,
+  voucher: String,
 });
 
 const siteDataSchema = new Schema({

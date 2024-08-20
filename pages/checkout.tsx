@@ -2,8 +2,9 @@
 import { format } from "@/constants/drugs";
 import { usePayment } from "@/hooks/usePayment";
 import { useProductsStore } from "@/store/useProducts";
+import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
@@ -11,8 +12,11 @@ const Checkout = () => {
   const { mutate } = usePayment();
   const [shipping_address, setShippingAddress] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [voucher, setVoucher] = useState<string>("");
+  const [isLoadingVoucher, setLoadingVoucher] = useState<boolean>(false);
   const [checkoutDisabled, setCheckoutDisabled] = useState<boolean>(false);
-
+  const voucherText = useRef<HTMLParagraphElement>(null);
+  const [discount, setDiscount] = useState<number>(0);
   const [hydrated, setHydrated] = useState(false);
 
   // const [edit, setEdit] = useState<boolean>(true);
@@ -27,6 +31,28 @@ const Checkout = () => {
   useEffect(() => {
     setHydrated(true);
   }, []);
+
+  function setVoucherInput(e: any) {
+    setVoucher(e.target.value)
+    axios.get(`/api/voucher?code=${e.target.value}`)
+      .then(({ data }) => {
+        if (voucherText.current) {
+          if (data.value) {
+            voucherText.current.innerHTML = `<p class="text-sm text-green-500">$${data.value} Discount code applied</p>`;
+            setDiscount(data.value);
+          }
+          else {
+            voucherText.current.innerHTML = `<p class="text-sm text-red-500">Discount code not found</p>`;
+            setDiscount(0);
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching voucher:", error);
+      }).finally(() => {
+        setLoadingVoucher(false);
+      });
+  }
 
   if (!hydrated) {
     return null; // or a loading indicator
@@ -56,7 +82,7 @@ const Checkout = () => {
         {product.length !== 0 ? (
           product.map((items, i) => (
             <div
-              className="flex items-start justify-between rounded-[20px] bg-black p-[10px]"
+              className="flex items-start justify-between rounded-[20px] bg-[#0e1621ff] p-[10px]"
               key={i}
             >
               <div className="flex space-x-3 w-full">
@@ -79,7 +105,7 @@ const Checkout = () => {
                     />
                   </div>
                   <div className="flex justify-between items-center">
-                    <h2 className="text-[15px] font-bold text-[#F6D211]">
+                    <h2 className="text-[15px] font-bold text-white">
                       ${format(items.price)}
                     </h2>
                     <div className="space-x-4 flex items-center">
@@ -114,27 +140,27 @@ const Checkout = () => {
         <>
           <section className="space-y-2">
             <h1 className="text-[18px] font-bold">Payment Method</h1>
-            <div className="flex items-center space-x-3 rounded-[20px] bg-black p-[10px]">
-              <div className="h-fit cursor-pointer rounded-full border border-[#F6D211] p-1">
-                <div className="size-2 rounded-full bg-[#F6D211]" />
+            <div className="flex items-center space-x-3 rounded-[20px] bg-[#0e1621ff] p-[10px]">
+              <div className="h-fit cursor-pointer rounded-full border border-white p-1">
+                <div className="size-2 rounded-full bg-white" />
               </div>
-              <div className="flex items-center justify-center rounded-lg bg-[#F6D211] p-4">
+              <div className="flex items-center justify-center rounded-lg bg-white p-4">
                 <img src="/assets/images/wallet.svg" alt="Image" />
               </div>
-              <h1 className="text-[17px]">Wallet</h1>
+              <h1 className="text-[17px]">Crypto</h1>
             </div>
           </section>
           <section className="space-y-2">
             <header className="flex items-center justify-between">
               <h1 className="text-[18px] font-bold">Shipping Address</h1>
               {/* <p
-                className="text-[#F6D211] cursor-pointer"
+                className="text-white cursor-pointer"
                 onClick={() => setEdit(!edit)}
               >
                 {!edit ? "save" : "change"}
               </p> */}
             </header>
-            <div className="flex flex-col space-y-2 rounded-[20px] bg-black p-[15px]">
+            <div className="flex flex-col space-y-2 rounded-[20px] bg-[#0e1621ff] p-[15px]">
               <textarea
                 className="bg-transparent outline-none resize-none text-sm placeholder:text-white"
                 name=""
@@ -142,8 +168,8 @@ const Checkout = () => {
                 placeholder="Enter your address"
                 value={shipping_address}
                 onChange={(e) => setShippingAddress(e.target.value)}
-                // cols="30"
-                // rows="10"
+              // cols="30"
+              // rows="10"
               ></textarea>
               {/* <input
                 name="country"
@@ -171,11 +197,22 @@ const Checkout = () => {
           <section className="space-y-2">
             <h1>Email</h1>
             <input
-              className="w-full rounded-lg bg-black p-3 text-sm outline-none placeholder:text-white"
+              className="w-full rounded-lg bg-[#0e1621ff] p-3 text-sm outline-none placeholder:text-white"
               type="text"
               placeholder="Enter your contact email"
               onChange={(e) => setEmail(e.target.value)}
             />
+          </section>
+          <section className="space-y-2">
+            <h1>Discount Voucher</h1>
+            <input
+              className="w-full rounded-lg bg-[#0e1621ff] p-3 text-sm outline-none placeholder:text-white"
+              type="text"
+              placeholder="e.g 10OFF1234 (optional)"
+              onChange={setVoucherInput}
+            />
+            <div ref={voucherText}>
+            </div>
           </section>
           <section className="flex justify-between">
             <p className="text-[17px]">Total</p>
@@ -184,14 +221,14 @@ const Checkout = () => {
               {product.reduce(
                 (accumulator, item) => accumulator + item.price * item.quantity,
                 0
-              )}
+              ) - discount}
             </h1>
           </section>
           <button
             disabled={checkoutDisabled}
-            className="w-full rounded-[30px] bg-[#F6D211] px-[70px] py-[19px] text-[17px] text-black"
+            className="w-full rounded-[30px] bg-white px-[70px] py-[19px] text-[17px] text-black"
             onClick={() => {
-              if (shipping_address !== "" && email !== "") {
+              if (shipping_address !== "" && email !== "" && !isLoadingVoucher) {
                 mutate(
                   {
                     user: window?.Telegram?.WebApp?.initDataUnsafe?.user?.id.toString(),
@@ -200,7 +237,7 @@ const Checkout = () => {
                       quantity: item.quantity,
                     })),
                     shipping_address,
-                    email,
+                    email, voucher
                   },
                   {
                     onSuccess: (response) => {
@@ -229,4 +266,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-``;

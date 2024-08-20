@@ -27,7 +27,7 @@ export default function Home() {
           {data?.response.map((category: any, i: any) => (
             <li
               key={i}
-              className={`${active === category.name ? "text-[#F6D211]" : "text-[#9A9A9D]"
+              className={`${active === category.name ? "text-white" : "text-[#9A9A9D]"
                 } cursor-pointer whitespace-nowrap`}
               onClick={() => setActive(category.name)}
             >
@@ -41,7 +41,7 @@ export default function Home() {
       ))}
       <Link
         href={"/checkout"}
-        className="bg-[#F6D211] p-4 rounded-full sticky mt-2 bottom-2 w-fit self-end"
+        className="bg-white p-4 rounded-full sticky mt-2 bottom-2 w-fit self-end"
       >
         <div className="relative">
           <img src="/assets/images/cart.svg" alt="" />

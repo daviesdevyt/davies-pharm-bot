@@ -6,6 +6,7 @@ interface Order {
   products: { _id: number; quantity: number }[];
   shipping_address: string;
   email: string;
+  voucher?: string;
 }
 
 const apiClient = new ApiClient<any>("api/order");

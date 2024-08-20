@@ -17,7 +17,10 @@ export default async function POST(req: NextApiRequest, res: NextApiResponse) {
     if (payload.status == "paid") {
       connectMongoDB();
       const order = await Order.findOneAndUpdate({ invoice_id: payload.invoice_id, status: "created" }, { status: payload.status }).exec();
+
+      if (order.voucher) await Voucher.deleteOne({ code: order.voucher }).exec();
       let text = `Payment received for your order\n`;
+
       for (const product of order.products) {
         text += `\n<b>${product.name}</b> x ${product.quantity}`;
       }

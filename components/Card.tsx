@@ -27,11 +27,11 @@ const Card: React.FC<CardProps> = ({
     );
   };
   return (
-    <div className="-center relative flex flex-col rounded-2xl border border-[#2D2D2D] bg-black px-4 py-2">
+    <div className="-center relative flex flex-col rounded-2xl border border-[#2D2D2D] bg-[#0e1621ff] px-4 py-2">
       <img src={image} className="my-4 h-[91px] object-contain" alt="" />
       <div className="w-full space-y-1">
         <h1 className="text-[15.2px] font-semibold ">{drug}</h1>
-        <h2 className="text-[16px] font-bold text-[#F6D211]">
+        <h2 className="text-[16px] font-bold text-white">
           ${currentPrice}
         </h2>
         {formerPrice && (
@@ -39,12 +39,12 @@ const Card: React.FC<CardProps> = ({
             <h3 className="text-[12px] text-[#E1E2E47A] line-through">
               ${formerPrice}
             </h3>
-            <p className="text-[8px] text-[#F6D211]">{discount}% Off</p>
+            <p className="text-[8px] text-white">{discount}% Off</p>
           </div>
         )}
       </div>
       <div
-        className="absolute bottom-2 right-2 flex size-[36px] cursor-pointer items-center justify-center rounded-full bg-[#F6D211]"
+        className="absolute bottom-2 right-2 flex size-[36px] cursor-pointer items-center justify-center rounded-full bg-white"
         onClick={handleClick}
       >
         <img src="/assets/images/plus.svg" alt="Add to cart" />
