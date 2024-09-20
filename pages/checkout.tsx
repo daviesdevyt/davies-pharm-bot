@@ -223,7 +223,6 @@ const Checkout = () => {
                 0
               ) - discount}
             </h1>
-            {window?.Telegram?.WebApp?.initDataUnsafe?.user?.id}
           </section>
           <button
             disabled={checkoutDisabled}
