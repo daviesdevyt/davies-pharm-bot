@@ -198,7 +198,7 @@ const Checkout = () => {
             <h1>Email</h1>
             <input
               className="w-full rounded-lg bg-[#0e1621ff] p-3 text-sm outline-none placeholder:text-white"
-              type="text"
+              type="email"
               placeholder="Enter your contact email"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -223,6 +223,7 @@ const Checkout = () => {
                 0
               ) - discount}
             </h1>
+            {window?.Telegram?.WebApp?.initDataUnsafe?.user?.id}
           </section>
           <button
             disabled={checkoutDisabled}
