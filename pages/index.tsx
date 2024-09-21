@@ -14,6 +14,10 @@ export default function Home() {
     if (data) setActive(data?.response[0].name);
   }, [data]);
 
+  useEffect(() => {
+    window.Telegram?.WebApp.expand();
+  }, []);
+
   return (
     <main className="min-h-screen p-5 relative flex flex-col">
       <div className="max-w-8xl">

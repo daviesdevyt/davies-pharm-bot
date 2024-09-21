@@ -1,15 +1,40 @@
+import { useState, useEffect } from "react";
 import ApiClient from "@/services/api-client";
-import { useQuery } from "@tanstack/react-query";
 
 type ProductData = any;
 
 export const useProducts = () => {
+  const [data, setData] = useState<ProductData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const apiClient = new ApiClient<ProductData>(`api/products`);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiClient = new ApiClient<ProductData>(`api/products`);
+        const response = await apiClient.get();
+        setData(response);
+      } catch (err) {
+        setError("Error loading products");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    return useQuery({
-        queryKey: ["products"],
-        queryFn: () => apiClient.get(),
-        // enabled: !!user_id,
-    });
+    const cachedData = localStorage.getItem("products");
+    if (cachedData) {
+      setData(JSON.parse(cachedData));
+      setIsLoading(false);
+    } else {
+      fetchData();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      localStorage.setItem("products", JSON.stringify(data));
+    }
+  }, [data]);
+
+  return { data, error, isLoading };
 };
